@@ -1,0 +1,9 @@
+#terraform.exe not needed to go in git
+terraform.exe
+#automatically generated after terraform apply
+.terraform/*
+#tf state files 
+*.tfstate
+*.tfstate.*
+#may contain sensitive info
+*.tfvars 
