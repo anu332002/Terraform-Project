@@ -88,6 +88,11 @@ data "aws_ami" "latest-amazon-linux-image" {
 output "aws_ami" {
   value = data.aws_ami.latest-amazon-linux-image.id
 }
+
+output "ec2_public_ip" {
+  value = aws_instance.myapp-server.public_ip
+}
+
 resource "aws_instance" "myapp-server" {
   ami = data.aws_ami.latest-amazon-linux-image.id  #image which the server is based on(OS Image)
   instance_type = var.instance_type
@@ -96,6 +101,14 @@ resource "aws_instance" "myapp-server" {
   availability_zone = var.avai_zone
   associate_public_ip_address = true
   key_name = aws_key_pair.ssh-key.key_name
+
+/*(attribute)entry point script that gets executed 
+on ec2 instance whenever the server is instantiated. 
+Multi-line script. Defined using EOF block. Start with shebang
+EOF block will only get executed once.
+*/
+
+user_data=file("entry-script.sh")
 
   tags = {
     Name="${var.env-prefix}-server"
@@ -106,3 +119,4 @@ resource "aws_key_pair" "ssh-key" {
   key_name = "terraform-keypair"
   public_key = file(var.ssh_key_location)
 }
+
