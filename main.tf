@@ -1,7 +1,5 @@
 provider "aws" {
   region     = "eu-west-3"
-  access_key = "AKIA2OAJTXXDH23V2R7I"
-  secret_key = "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"
 }
 
 variable "Environment" {
